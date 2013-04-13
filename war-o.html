@@ -1,93 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Racko-o</title>
+		<title>War-o</title>
 		<script src="jquery-1.9.1.min.js"></script>
 		
-		<script>
+		<script src="war-o.js">
 		
-		var numberOfPlayers = 3;
-		var kittyIndex = numberOfPlayers;
-		
-		var maxValue = 60;
-		
-		
-		function shuffle(o){ //v1.0
-		    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-		    return o;
-		}
-		
-		
-		
-		function createPlayer() {
-			return { 
-				hand : [],
-				winnings : [],
-				initialize : function () {
-					this.hand.sort();
-				},
-				whatToPlay : function (kittyValue) {
-					
-					if ( kittyValue > (maxValue / 2)) {
-						return this.hand.pop();
-					} else {
-						return this.hand.shift();
-					}
-				}
-			};
-		}
-		
-		$( document ).ready(function() {
-
-			var deck = [];
-			
-			for (var i = 0; i < 60; i++) {
-				deck[i] = i + 1;
-			}
-			
-			deck = shuffle(deck);
-			
-			var players = new Object();
-			var kitty = [];
-			
-			for (var i = 0 ; i < numberOfPlayers ; i++ ) { 
-				players[i] = createPlayer();
-			}
-			
-			var counter = 0;
-			
-			for (var i = 0 ; i < maxValue ; i++) {
-				if (counter === numberOfPlayers){
-					kitty.push(deck.pop())
-					counter = 0;
-				} else {
-					players[counter].hand.push( deck.pop() );
-					//$('#output').append(list[val] + '<br />');
-					counter++;
-				}
-			}
-			
-			for (var i in players ) {
-				$('#output').append('<div style="float : left; padding: 3em;" id="player' + i +'"></div>');
-				
-				for (var playerIndex in players[i].hand) {
-					$('#player' + i).append(players[i].hand[playerIndex] +'<br />');
-				}
-			}
-			
-			$('#output').append('<div style="float : left; padding: 3em; color: red;" id="kitty" />');
-			for (var i in kitty) {
-				$('#kitty').append(kitty[i] +'<br />');
-			}
-			
-			
-		});
 		</script>
 	</head>
 
 	<body>
 		<h1>Rack-o</h1>
-		<div id='output'></div>
+		
+		<div id='before-init' style='width:100%;'></div>
+		
+		<div id='output' style='width:100%; border-width: 2px; border-color: black;'></div>
 		
 	</body>
 
