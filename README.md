@@ -1,6 +1,5 @@
 To run:
 
-1. Copy jquery-1.9.1.min.js to the same directory
-2. Open in a browser
+    Open in a browser
 
-We got about as far as dealing out the hands for the players (including the 'kitty') but had hoped to make it easy to make strategies for each player.
+The players should automatically play a game and you should see the status of the game, and each player's final score.
