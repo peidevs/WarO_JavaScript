@@ -4,7 +4,7 @@ test( "Player.calculateTotal - 0 for New", function () {
 	//test
 	var total = player.calculateTotal();
 	
-	ok( 0 === total, "Passed");
+	equal(total, 0, "Passed");
 });
 
 test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
@@ -15,6 +15,6 @@ test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
 	//test
 	var total = player.calculateTotal();
 	
-	ok( 3 === total, "Passed");
+	ok(total, 3, "Passed");
 });
 
