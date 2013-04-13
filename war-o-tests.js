@@ -15,6 +15,6 @@ test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
 	//test
 	var total = player.calculateTotal();
 	
-	ok(total, 3, "Passed");
+	equal(total, 3, "Passed");
 });
 
