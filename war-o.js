@@ -63,11 +63,6 @@ WARO = (function ($) {
 var numberOfPlayers = 3;
 var maxValue = 60;
 
-function shuffle(o){ //v1.0
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-}
-
 function createPlayer() {
     return { 
         hand : [],
@@ -105,7 +100,7 @@ $( document ).ready(function() {
         deck[i] = i + 1;
     }
 
-    deck = shuffle(deck);
+    deck = WARO.shuffleDeck(deck);
     
     var players = new Object();
     var kitty = [];
