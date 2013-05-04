@@ -18,3 +18,18 @@ test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
 	equal(total, 3, "Passed");
 });
 
+test( "WARO.createDeck", function () {
+    // test
+    var deck = WARO.createDeck(60);
+
+    equal(deck.length, 60, "Passed");
+});
+
+test( "WARO.shuffleDeck - same length", function () {
+    var orig = [1,2,3];
+
+    //test
+    var shuff = WARO.shuffleDeck(orig);
+
+    equal(shuff.length, orig.length, "Passed");
+});

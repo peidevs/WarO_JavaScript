@@ -1,8 +1,70 @@
+WARO = (function ($) {
+    // Code goes here
+    var numberOfPlayers = 3;
+    var numberOfCardsEach = 15;
+
+    var totalCards = numberOfPlayers * numberOfCardsEach;
+
+    createPlayer = function () {
+        return { 
+            hand : [],
+            winnings : [],
+            initialize : function () {
+                this.hand.sort(function(a,b) {
+                    return b-a;
+                });
+            },
+            whatToPlay : function (kittyValue) {
+                
+                if ( kittyValue > (maxValue / 2)) {
+                    return this.hand.shift();
+                } else {
+                    return this.hand.pop();
+                }
+            },
+            calculateTotal : function () {
+                var total = 0;
+                $.each(this.winnings, function () {
+                    total += this;
+                });
+                return total;
+            }
+        };
+    };
+
+    this.createDeck = function (cards) {
+        var deck = [];
+
+        for(var initIndex = 0; initIndex < cards; initIndex++) {
+            deck[initIndex] = initIndex + 1;
+        }
+
+        return deck;
+    };
+
+    this.shuffleDeck = function (deck) {
+        var shuffledDeck = deck.slice(0); // naive clone
+
+        for (var index = deck.length - 1; index > 0; index--) {
+            var shuffIndex = Math.floor(Math.random() * (index + 1));
+            var temp = shuffledDeck[index];
+            shuffledDeck[index] = shuffledDeck[shuffIndex];
+            shuffledDeck[shuffIndex] = temp;
+
+            shuffledDeck[shuffIndex] = shuffledDeck[index];
+        }
+
+        return shuffledDeck;
+    };
+
+    return this;
+} (jQuery) );
+
 var numberOfPlayers = 3;
 var maxValue = 60;
 
 function shuffle(o){ //v1.0
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 }
 
