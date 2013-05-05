@@ -33,3 +33,23 @@ test( "WARO.shuffleDeck - same length", function () {
 
     equal(shuff.length, orig.length, "Passed");
 });
+
+test( "WARO.splitDeck - 4-element array split into length 2 arrays gives 2 splits", function () {
+    var deck = [1, 2, 3, 4];
+
+    //test
+    var splits = WARO.splitDeck(deck, 2);
+
+    equal(splits.length, 2, "Passed");
+});
+
+test( "WARO.splitDeck - 5-element array split into length 1 arrays gives 5 splits", function () {
+    var deck = [1,2,3,4,5];
+
+    //test
+    var splits = WARO.splitDeck(deck, 1);
+
+    equal(splits.length, 5, "Passed");
+});
+
+

@@ -3,7 +3,9 @@ WARO = (function ($) {
     var numberOfPlayers = 3;
     var numberOfCardsEach = 15;
 
-    var totalCards = numberOfPlayers * numberOfCardsEach;
+    // We want the players to have an equal number of cards.
+    // The Kitty pile should have the same number of cards as the players (the +1)
+    var totalCards = (numberOfPlayers + 1) * numberOfCardsEach;
 
     createPlayer = function () {
         return { 
@@ -55,6 +57,16 @@ WARO = (function ($) {
         }
 
         return shuffledDeck;
+    };
+
+    this.splitDeck = function (deck, splitSize) {
+        var splits = [];
+
+        for (var deckIndex = 0, splitIndex = 0; deckIndex < deck.length; deckIndex += splitSize, splitIndex++) {
+            splits[splitIndex] = deck.slice(deckIndex, deckIndex + splitSize);
+        }
+
+        return splits;
     };
 
     return this;
