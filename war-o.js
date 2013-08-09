@@ -7,7 +7,7 @@ WARO = (function ($) {
     // The Kitty pile should have the same number of cards as the players (the +1)
     var totalCards = (numberOfPlayers + 1) * numberOfCardsEach;
 
-    createPlayer = function () {
+    var createPlayer = function () {
         return { 
             hand : [],
             winnings : [],
@@ -34,7 +34,7 @@ WARO = (function ($) {
         };
     };
 
-    this.createDeck = function (cards) {
+     var createDeck = function (cards) {
         var deck = [];
 
         for(var initIndex = 0; initIndex < cards; initIndex++) {
@@ -44,7 +44,7 @@ WARO = (function ($) {
         return deck;
     };
 
-    this.shuffleDeck = function (deck) {
+     var shuffleDeck = function (deck) {
         var shuffledDeck = deck.slice(0); // naive clone
 
         for (var index = deck.length - 1; index > 0; index--) {
@@ -59,7 +59,7 @@ WARO = (function ($) {
         return shuffledDeck;
     };
 
-    this.splitDeck = function (deck, splitSize) {
+     var splitDeck = function (deck, splitSize) {
         var splits = [];
 
         for (var deckIndex = 0, splitIndex = 0; deckIndex < deck.length; deckIndex += splitSize, splitIndex++) {
@@ -69,7 +69,12 @@ WARO = (function ($) {
         return splits;
     };
 
-    return this;
+    return {
+        createPlayer: createPlayer,
+            createDeck: createDeck,
+            shuffleDeck: shuffleDeck,
+            splitDeck: splitDeck
+    };
 } (jQuery) );
 
 var numberOfPlayers = 3;
