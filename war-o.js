@@ -1,11 +1,62 @@
 WARO = (function ($) {
-    // Code goes here
-    var numberOfPlayers = 3;
-    var numberOfCardsEach = 15;
+    var STATE = {
+        NEWLY_CREATED: "Newly Created",
+        READY: "Ready",
+        IN_PROGRESS: "In progress",
+        FINISHED: "Finished"
+    };
+    var _gameState = STATE.NEWLY_CREATED;
+    var _numberOfPlayers = 0;
+    var _players = [];
+    var _kitty = null;
 
-    // We want the players to have an equal number of cards.
-    // The Kitty pile should have the same number of cards as the players (the +1)
-    var totalCards = (numberOfPlayers + 1) * numberOfCardsEach;
+    var initializeGame = function (numberOfPlayers, numberOfRounds) {
+        _numberOfPlayers = numberOfPlayers;
+        var deckSize = (_numberOfPlayers + 1) * numberOfRounds;
+
+        _gameState = STATE.READY;
+    };
+
+    var registerPlayer = function (name) {
+        // Create Player
+        // Push to _players
+        //
+        if (_numberOfPlayers === _players.length) {
+            _gameState = STATE.READY;
+        }
+    };
+
+    var isGameNewlyCreated = function() {
+        if (STATE.NEWLY_CREATED === _gameState) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    var isGameReady = function() {
+        if (STATE.READY === _gameState) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    var isGameInProgress = function() {
+        if (STATE.IN_PROGRESS === _gameState) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    var isGameFinished = function() {
+        if (STATE.FINISHED === _gameState) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     var createPlayer = function () {
         return { 
