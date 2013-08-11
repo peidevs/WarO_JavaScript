@@ -1,6 +1,7 @@
 WARO = (function ($) {
     var STATE = {
         NEWLY_CREATED: "Newly Created",
+        INVALID: "Invalid",
         READY: "Ready",
         IN_PROGRESS: "In progress",
         FINISHED: "Finished"
@@ -11,16 +12,37 @@ WARO = (function ($) {
     var _kitty = null;
 
     var initializeGame = function (numberOfPlayers, numberOfRounds) {
-        _numberOfPlayers = numberOfPlayers;
-        var deckSize = (_numberOfPlayers + 1) * numberOfRounds;
+        if (numberOfPlayers >=2 && numberOfRounds >= 1) {
+            _numberOfPlayers = numberOfPlayers;
+            var deckSize = (_numberOfPlayers + 1) * numberOfRounds;
 
-        _gameState = STATE.READY;
+            _gameState = STATE.READY;
+        } else {
+            _gameState = STATE.INVALID;
+        }
+    };
+
+    var createPlayer = function (number, name) {
+        var player = {};
+
+        player.getName = function () {
+            return name;
+        };
+
+        player.getNumber = function () {
+            return number;
+        };
+        
+        return player;
     };
 
     var registerPlayer = function (name) {
         // Create Player
+        var player = createPlayer(_players.length + 1, name);
+
         // Push to _players
-        //
+        _players.push(player);
+
         if (_numberOfPlayers === _players.length) {
             _gameState = STATE.READY;
         }
@@ -28,6 +50,10 @@ WARO = (function ($) {
 
     var isGameNewlyCreated = function() {
         return STATE.NEWLY_CREATED === _gameState;
+    };
+
+    var isGameInvalid = function() {
+        return STATE.INVALID === _gameState;
     };
 
     var isGameReady = function() {
@@ -40,33 +66,6 @@ WARO = (function ($) {
 
     var isGameFinished = function() {
         return STATE.FINISHED === _gameState;
-    };
-
-    var createPlayer = function () {
-        return { 
-            hand : [],
-            winnings : [],
-            initialize : function () {
-                this.hand.sort(function(a,b) {
-                    return b-a;
-                });
-            },
-            whatToPlay : function (kittyValue) {
-                
-                if ( kittyValue > (maxValue / 2)) {
-                    return this.hand.shift();
-                } else {
-                    return this.hand.pop();
-                }
-            },
-            calculateTotal : function () {
-                var total = 0;
-                $.each(this.winnings, function () {
-                    total += this;
-                });
-                return total;
-            }
-        };
     };
 
      var createDeck = function (cards) {
@@ -108,7 +107,13 @@ WARO = (function ($) {
         createPlayer: createPlayer,
             createDeck: createDeck,
             shuffleDeck: shuffleDeck,
-            splitDeck: splitDeck
+            splitDeck: splitDeck,
+            isGameNewlyCreated: isGameNewlyCreated,
+            isGameInvalid: isGameInvalid,
+            isGameReady: isGameReady,
+            isGameInProgress: isGameInProgress,
+            isGameFinished: isGameFinished,
+            initializeGame: initializeGame
     };
 } (jQuery) );
 

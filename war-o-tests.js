@@ -18,6 +18,34 @@ test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
 	equal(total, 3, "Passed");
 });
 
+test( "WARO - Initial State is Newly Created", function () {
+    // test
+    var result = WARO.isGameNewlyCreated();
+
+    equal(result, true, "Passed");
+});
+
+test( "WARO.initializeGame - Enters Ready State", function () {
+    // test
+    WARO.initializeGame(2, 2);
+
+    equal(WARO.isGameReady(), true, "Passed");
+});
+
+test( "WARO.initializeGame - Not Enough Players goes to Invalid State", function () {
+    // test
+    WARO.initializeGame(1, 2);
+
+    equal(WARO.isGameInvalid(), true, "Passed");
+});
+
+test( "WARO.initializeGame - Not Enough Rounds goes to Invalid State", function () {
+    // test
+    WARO.initializeGame(2, 0);
+
+    equal(WARO.isGameInvalid(), true, "Passed");
+});
+
 test( "WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);
