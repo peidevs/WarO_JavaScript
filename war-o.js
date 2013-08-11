@@ -27,35 +27,19 @@ WARO = (function ($) {
     };
 
     var isGameNewlyCreated = function() {
-        if (STATE.NEWLY_CREATED === _gameState) {
-            return true;
-        } else {
-            return false;
-        }
+        return STATE.NEWLY_CREATED === _gameState;
     };
 
     var isGameReady = function() {
-        if (STATE.READY === _gameState) {
-            return true;
-        } else {
-            return false;
-        }
+        return STATE.READY === _gameState;
     };
 
     var isGameInProgress = function() {
-        if (STATE.IN_PROGRESS === _gameState) {
-            return true;
-        } else {
-            return false;
-        }
+        return STATE.IN_PROGRESS === _gameState;
     };
 
     var isGameFinished = function() {
-        if (STATE.FINISHED === _gameState) {
-            return true;
-        } else {
-            return false;
-        }
+        return STATE.FINISHED === _gameState;
     };
 
     var createPlayer = function () {
