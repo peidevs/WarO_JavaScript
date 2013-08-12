@@ -25,25 +25,33 @@ test( "WARO - Initial State is Newly Created", function () {
     equal(result, true, "Passed");
 });
 
-test( "WARO.initializeGame - Enters Ready State", function () {
-    // test
-    WARO.initializeGame(2, 2);
-
-    equal(WARO.isGameReady(), true, "Passed");
-});
-
 test( "WARO.initializeGame - Not Enough Players goes to Invalid State", function () {
-    // test
     WARO.initializeGame(1, 2);
 
-    equal(WARO.isGameInvalid(), true, "Passed");
+    // test
+    var result = WARO.isGameInvalid();
+
+    equal(result, true, "Passed");
 });
 
 test( "WARO.initializeGame - Not Enough Rounds goes to Invalid State", function () {
-    // test
     WARO.initializeGame(2, 0);
 
-    equal(WARO.isGameInvalid(), true, "Passed");
+    // test
+    var result = WARO.isGameInvalid();
+
+    equal(result, true, "Passed");
+});
+
+test( "WARO.registerPlayer - Register 2 of 2 players goes to In Progress", function () {
+    WARO.initializeGame(2, 1);
+    WARO.registerPlayer(1, "Alice");
+    WARO.registerPlayer(2, "Bob");
+
+    // test
+    var result = WARO.isGameInProgress(2, 0);
+
+    equal(result, true, "Passed");
 });
 
 test( "WARO.createDeck", function () {

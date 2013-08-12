@@ -2,7 +2,6 @@ WARO = (function ($) {
     var STATE = {
         NEWLY_CREATED: "Newly Created",
         INVALID: "Invalid",
-        READY: "Ready",
         IN_PROGRESS: "In progress",
         FINISHED: "Finished"
     };
@@ -44,7 +43,7 @@ WARO = (function ($) {
         _players.push(player);
 
         if (_numberOfPlayers === _players.length) {
-            _gameState = STATE.READY;
+            _gameState = STATE.IN_PROGRESS;
         }
     };
 
@@ -54,10 +53,6 @@ WARO = (function ($) {
 
     var isGameInvalid = function() {
         return STATE.INVALID === _gameState;
-    };
-
-    var isGameReady = function() {
-        return STATE.READY === _gameState;
     };
 
     var isGameInProgress = function() {
@@ -110,10 +105,10 @@ WARO = (function ($) {
             splitDeck: splitDeck,
             isGameNewlyCreated: isGameNewlyCreated,
             isGameInvalid: isGameInvalid,
-            isGameReady: isGameReady,
             isGameInProgress: isGameInProgress,
             isGameFinished: isGameFinished,
-            initializeGame: initializeGame
+            initializeGame: initializeGame,
+            registerPlayer: registerPlayer
     };
 } (jQuery) );
 
