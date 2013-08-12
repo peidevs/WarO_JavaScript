@@ -54,6 +54,16 @@ test( "WARO.registerPlayer - Register 2 of 2 players goes to In Progress", funct
     equal(result, true, "Passed");
 });
 
+test( "WARO.registerPlayer - Register 1 of 2 players goes to In Progress", function () {
+    WARO.initializeGame(2, 1);
+    WARO.registerPlayer(1, "Alice");
+
+    // test
+    var result = WARO.isGameInProgress(2, 0);
+
+    equal(result, false, "Passed");
+});
+
 test( "WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);
