@@ -1,9 +1,9 @@
 WARO = (function ($) {
     var STATE = {
         NEWLY_CREATED: "Newly Created",
-        INVALID: "Invalid",
-        IN_PROGRESS: "In progress",
-        FINISHED: "Finished"
+     INVALID: "Invalid",
+     IN_PROGRESS: "In progress",
+     FINISHED: "Finished"
     };
     var _gameState = STATE.NEWLY_CREATED;
     var _numberOfPlayers = 0;
@@ -31,7 +31,7 @@ WARO = (function ($) {
         player.getNumber = function () {
             return number;
         };
-        
+
         return player;
     };
 
@@ -63,7 +63,7 @@ WARO = (function ($) {
         return STATE.FINISHED === _gameState;
     };
 
-     var createDeck = function (cards) {
+    var createDeck = function (cards) {
         var deck = [];
 
         for(var initIndex = 0; initIndex < cards; initIndex++) {
@@ -73,7 +73,7 @@ WARO = (function ($) {
         return deck;
     };
 
-     var shuffleDeck = function (deck) {
+    var shuffleDeck = function (deck) {
         var shuffledDeck = deck.slice(0); // naive clone
 
         for (var index = deck.length - 1; index > 0; index--) {
@@ -88,7 +88,7 @@ WARO = (function ($) {
         return shuffledDeck;
     };
 
-     var splitDeck = function (deck, splitSize) {
+    var splitDeck = function (deck, splitSize) {
         var splits = [];
 
         for (var deckIndex = 0, splitIndex = 0; deckIndex < deck.length; deckIndex += splitSize, splitIndex++) {
@@ -98,8 +98,7 @@ WARO = (function ($) {
         return splits;
     };
 
-    return {
-        createPlayer: createPlayer,
+    return {createPlayer: createPlayer,
             createDeck: createDeck,
             shuffleDeck: shuffleDeck,
             splitDeck: splitDeck,
@@ -118,34 +117,34 @@ var maxValue = 60;
 function createPlayer() {
     return { 
         hand : [],
-        winnings : [],
-        initialize : function () {
-            this.hand.sort(function(a,b) {
-                return b-a;
-            });
-        },
-        whatToPlay : function (kittyValue) {
-            
-            if ( kittyValue > (maxValue / 2)) {
-                return this.hand.shift();
-            } else {
-                return this.hand.pop();
-            }
-        },
-        calculateTotal : function () {
-            var total = 0;
-            $.each(this.winnings, function () {
-                total += this;
-            });
-            return total;
-        }
+             winnings : [],
+             initialize : function () {
+                 this.hand.sort(function(a,b) {
+                     return b-a;
+                 });
+             },
+             whatToPlay : function (kittyValue) {
+
+                 if ( kittyValue > (maxValue / 2)) {
+                     return this.hand.shift();
+                 } else {
+                     return this.hand.pop();
+                 }
+             },
+             calculateTotal : function () {
+                 var total = 0;
+                 $.each(this.winnings, function () {
+                     total += this;
+                 });
+                 return total;
+             }
     };
 }
 
 $( document ).ready(function() {
 
     var deck = [];
-        
+
     var i = 0;
 
     for (i = 0; i < 60; i++) {
@@ -153,16 +152,16 @@ $( document ).ready(function() {
     }
 
     deck = WARO.shuffleDeck(deck);
-    
+
     var players = new Object();
     var kitty = [];
-    
+
     for (i = 0 ; i < numberOfPlayers ; i++ ) { 
-            players[i] = createPlayer();
+        players[i] = createPlayer();
     }
-    
+
     var counter = 0;
-    
+
     for (i = 0 ; i < maxValue ; i++) {
         if (counter === numberOfPlayers) {
             kitty.push(deck.pop());
@@ -172,48 +171,48 @@ $( document ).ready(function() {
             counter++;
         }
     }
-    
+
     for (i in players ) {
         $('#before-init').append('<div style="float : left; padding: 3em;" id="init-player' + i +'"></div>');
-                    
+
         for (var playerIndex in players[i].hand) {
             $('#init-player' + i).append(players[i].hand[playerIndex] +'<br />');
         }
     }
-            
+
     $('#before-init').append('<div style="float : left;  padding: 3em; color: red;" id="kitty" />');
 
     for (i in kitty) {
         $('#kitty').append(kitty[i] +'<br />');
-     }
-    
+    }
+
     for (var index in players) {
         players[index].initialize();
         $('#output').append('Initializing Player = ' + index + '<br />');
     }
-    
+
     for (var kIndex in kitty) {
-            
+
         kittyValue = kitty[kIndex];
 
         var highestBidderIndex = -1;
         var highestBid = -1;
-            
+
         for (var pIndex in players) {
-                    
+
             currentPlayerBid = players[pIndex].whatToPlay(kittyValue);
-                    
+
             if (currentPlayerBid > highestBid) {
                 highestBidderIndex = pIndex;
                 highestBid = currentPlayerBid;
             }
         }
-            
+
         $('#output').append('Player ' + highestBidderIndex + ' bid ' + highestBid + ' to win ' + kittyValue + ' points.<br />');
-            
+
         players[highestBidderIndex].winnings.push(kittyValue);
     }
-    
+
     for (var finalIndex in players) {
         $('#output').append('Player ' + finalIndex + ' won '+ players[finalIndex].calculateTotal() +' points.<br />');
     }
