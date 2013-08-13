@@ -15,6 +15,8 @@ WARO = (function ($) {
             _numberOfPlayers = numberOfPlayers;
             var deckSize = (_numberOfPlayers + 1) * numberOfRounds;
 
+            _players = [];
+
             _gameState = STATE.READY;
         } else {
             _gameState = STATE.INVALID;
