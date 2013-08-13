@@ -64,6 +64,16 @@ test( "WARO.registerPlayer - Register 1 of 2 players goes to In Progress", funct
     equal(result, false, "Passed");
 });
 
+test( "WARO.listOfPlayers - listed player has same name she was registered under", function () {
+    WARO.initializeGame(2, 1);
+    WARO.registerPlayer("Alice");
+
+    // test
+    var result = WARO.listOfPlayers();
+
+    equal(result[0], "Alice", "Passed");
+});
+
 test( "WARO.listOfPlayers - 2 returned when 2 are registered", function () {
     WARO.initializeGame(2, 1);
     WARO.registerPlayer("Alice");
