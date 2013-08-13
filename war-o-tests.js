@@ -45,8 +45,8 @@ test( "WARO.initializeGame - Not Enough Rounds goes to Invalid State", function 
 
 test( "WARO.registerPlayer - Register 2 of 2 players goes to In Progress", function () {
     WARO.initializeGame(2, 1);
-    WARO.registerPlayer(1, "Alice");
-    WARO.registerPlayer(2, "Bob");
+    WARO.registerPlayer("Alice");
+    WARO.registerPlayer("Bob");
 
     // test
     var result = WARO.isGameInProgress(2, 0);
@@ -62,6 +62,17 @@ test( "WARO.registerPlayer - Register 1 of 2 players goes to In Progress", funct
     var result = WARO.isGameInProgress(2, 0);
 
     equal(result, false, "Passed");
+});
+
+test( "WARO.listOfPlayers - 2 returned when 2 are registered", function () {
+    WARO.initializeGame(2, 1);
+    WARO.registerPlayer("Alice");
+    WARO.registerPlayer("Bob");
+
+    // test
+    var result = WARO.listOfPlayers();
+
+    equal(result.length, 2, "Passed");
 });
 
 test( "WARO.createDeck", function () {

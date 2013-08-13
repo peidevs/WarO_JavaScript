@@ -98,6 +98,16 @@ WARO = (function ($) {
         return splits;
     };
 
+    var listOfPlayers = function () {
+        var listOfPlayers = [];
+
+        for(var indexOfPlayers = 0; indexOfPlayers < _players.length; indexOfPlayers++) {
+            listOfPlayers[indexOfPlayers] = _players[indexOfPlayers].getName();
+        }
+
+        return listOfPlayers;
+    };
+
     return {createPlayer: createPlayer,
             createDeck: createDeck,
             shuffleDeck: shuffleDeck,
@@ -107,7 +117,8 @@ WARO = (function ($) {
             isGameInProgress: isGameInProgress,
             isGameFinished: isGameFinished,
             initializeGame: initializeGame,
-            registerPlayer: registerPlayer
+            registerPlayer: registerPlayer,
+            listOfPlayers: listOfPlayers
     };
 } (jQuery) );
 
