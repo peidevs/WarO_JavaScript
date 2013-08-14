@@ -13,7 +13,9 @@ WARO = (function ($) {
     var createGame = function (numberOfRounds, players) {
         var game = {};
 
-        if (players.length > 1 && numberOfRounds > 0) {
+        var playersOK = (players != null) && (players.length > 1);
+
+        if (playersOK && (numberOfRounds > 0)) {
             game._players = players.slice(0);
             game._state = STATE.NEWLY_CREATED;
         } else {
