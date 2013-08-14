@@ -10,6 +10,39 @@ WARO = (function ($) {
     var _players = [];
     var _kitty = null;
 
+    var createGame = function (numberOfRounds, players) {
+        var game = {};
+
+        if (players.length > 1 && numberOfRounds > 0) {
+            game._players = players.slice(0);
+            game._state = STATE.NEWLY_CREATED;
+        } else {
+            game._state = STATE.INVALID;
+        }
+
+        game.getPlayers = function () {
+            return _players.slice(0);
+        }
+
+        game.isGameNewlyCreated = function() {
+            return STATE.NEWLY_CREATED === _state;
+        };
+
+        game.isGameInvalid = function() {
+            return STATE.INVALID === _state;
+        };
+
+        game.isGameInProgress = function() {
+            return STATE.IN_PROGRESS === _state;
+        };
+
+        game.isGameFinished = function() {
+            return STATE.FINISHED === _state;
+        };
+
+        return game;
+    };
+
     var initializeGame = function (numberOfPlayers, numberOfRounds) {
         if (numberOfPlayers >=2 && numberOfRounds >= 1) {
             _numberOfPlayers = numberOfPlayers;
