@@ -1,103 +1,66 @@
 WARO = (function ($) {
-    var STATE = {
-        NEWLY_CREATED: "Newly Created",
-     INVALID: "Invalid",
-     IN_PROGRESS: "In progress",
-     FINISHED: "Finished"
-    };
-    var _gameState = STATE.NEWLY_CREATED;
     var _numberOfPlayers = 0;
     var _players = [];
     var _kitty = null;
 
     var createGame = function (numberOfRounds, players) {
+        var STATE = {
+         INVALID: "Invalid",
+         IN_PROGRESS: "In progress",
+         FINISHED: "Finished"
+        };
         var game = {};
+        var _state = STATE.INVALID;
+        var _players = players.slice(0);
 
-        var playersOK = (players != null) && (players.length > 1);
+        var playersOK = (_players != null) && (_players.length > 1);
 
         if (playersOK && (numberOfRounds > 0)) {
-            game._players = players.slice(0);
-            game._state = STATE.NEWLY_CREATED;
+            _players = players.slice(0);
+            _state = STATE.IN_PROGRESS;
         } else {
-            game._state = STATE.INVALID;
+            _state = STATE.INVALID;
         }
 
         game.getPlayers = function () {
             return _players.slice(0);
         }
 
-        game.isGameNewlyCreated = function() {
-            return STATE.NEWLY_CREATED === _state;
-        };
-
-        game.isGameInvalid = function() {
+        game.isInvalid = function() {
             return STATE.INVALID === _state;
         };
 
-        game.isGameInProgress = function() {
+        game.isInProgress = function() {
             return STATE.IN_PROGRESS === _state;
         };
 
-        game.isGameFinished = function() {
+        game.isFinished = function() {
             return STATE.FINISHED === _state;
+        };
+
+        game.getPlayerList = function () {
+            var playerNames = [];
+
+            for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
+                playerNames.push(_players[playerIndex].getName());
+            }
+
+            return playerNames;
         };
 
         return game;
     };
 
-    var initializeGame = function (numberOfPlayers, numberOfRounds) {
-        if (numberOfPlayers >=2 && numberOfRounds >= 1) {
-            _numberOfPlayers = numberOfPlayers;
-            var deckSize = (_numberOfPlayers + 1) * numberOfRounds;
+    var createPlayer = function (name) {
+        var _name = name;
 
-            _players = [];
-
-            _gameState = STATE.READY;
-        } else {
-            _gameState = STATE.INVALID;
-        }
-    };
-
-    var createPlayer = function (number, name) {
-        var player = {};
-
-        player.getName = function () {
+        var getName = function () {
             return name;
         };
 
-        player.getNumber = function () {
-            return number;
-        };
-
-        return player;
-    };
-
-    var registerPlayer = function (name) {
-        // Create Player
-        var player = createPlayer(_players.length + 1, name);
-
-        // Push to _players
-        _players.push(player);
-
-        if (_numberOfPlayers === _players.length) {
-            _gameState = STATE.IN_PROGRESS;
-        }
-    };
-
-    var isGameNewlyCreated = function() {
-        return STATE.NEWLY_CREATED === _gameState;
-    };
-
-    var isGameInvalid = function() {
-        return STATE.INVALID === _gameState;
-    };
-
-    var isGameInProgress = function() {
-        return STATE.IN_PROGRESS === _gameState;
-    };
-
-    var isGameFinished = function() {
-        return STATE.FINISHED === _gameState;
+        return {
+            getName: getName
+        };;
     };
 
     var createDeck = function (cards) {
@@ -135,27 +98,11 @@ WARO = (function ($) {
         return splits;
     };
 
-    var listOfPlayers = function () {
-        var listOfPlayers = [];
-
-        for(var indexOfPlayers = 0; indexOfPlayers < _players.length; indexOfPlayers++) {
-            listOfPlayers[indexOfPlayers] = _players[indexOfPlayers].getName();
-        }
-
-        return listOfPlayers;
-    };
-
     return {createPlayer: createPlayer,
             createDeck: createDeck,
             shuffleDeck: shuffleDeck,
             splitDeck: splitDeck,
-            isGameNewlyCreated: isGameNewlyCreated,
-            isGameInvalid: isGameInvalid,
-            isGameInProgress: isGameInProgress,
-            isGameFinished: isGameFinished,
-            initializeGame: initializeGame,
-            registerPlayer: registerPlayer,
-            listOfPlayers: listOfPlayers
+            createGame: createGame
     };
 } (jQuery) );
 

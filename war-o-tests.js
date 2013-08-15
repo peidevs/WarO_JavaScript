@@ -18,69 +18,64 @@ test( "Player.calculateTotal - 3 for card values of 1 and 2", function () {
     equal(total, 3, "Passed");
 });
 
-test( "WARO - Initial State is Newly Created", function () {
+test( "WARO.createGame - newly created, valid game is In Progress", function () {
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+
     // test
-    var result = WARO.isGameNewlyCreated();
+    var game = WARO.createGame(1, players);
+
+    var result = game.isInProgress();
 
     equal(result, true, "Passed");
 });
 
-test( "WARO.initializeGame - Not Enough Players goes to Invalid State", function () {
-    WARO.initializeGame(1, 2);
+test( "WARO.createGame - Not Enough Players goes to Invalid State", function () {
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
 
     // test
-    var result = WARO.isGameInvalid();
+    var game = WARO.createGame(1, players);
+
+    var result = game.isInvalid();
 
     equal(result, true, "Passed");
 });
 
-test( "WARO.initializeGame - Not Enough Rounds goes to Invalid State", function () {
-    WARO.initializeGame(2, 0);
+test( "WARO.createGame - Not Enough Rounds goes to Invalid State", function () {
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
 
     // test
-    var result = WARO.isGameInvalid();
+    var game = WARO.createGame(0, players);
+
+    var result = game.isInvalid();
 
     equal(result, true, "Passed");
 });
 
-test( "WARO.registerPlayer - Register 2 of 2 players goes to In Progress", function () {
-    WARO.initializeGame(2, 1);
-    WARO.registerPlayer("Alice");
-    WARO.registerPlayer("Bob");
+test( "WARO.Game.getPlayerList - listed player has same name she was registered under", function () {
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var game = WARO.createGame(1, players);
 
     // test
-    var result = WARO.isGameInProgress(2, 0);
-
-    equal(result, true, "Passed");
-});
-
-test( "WARO.registerPlayer - Register 1 of 2 players goes to In Progress", function () {
-    WARO.initializeGame(2, 1);
-    WARO.registerPlayer(1, "Alice");
-
-    // test
-    var result = WARO.isGameInProgress(2, 0);
-
-    equal(result, false, "Passed");
-});
-
-test( "WARO.listOfPlayers - listed player has same name she was registered under", function () {
-    WARO.initializeGame(2, 1);
-    WARO.registerPlayer("Alice");
-
-    // test
-    var result = WARO.listOfPlayers();
+    var result = game.getPlayerList();
 
     equal(result[0], "Alice", "Passed");
 });
 
-test( "WARO.listOfPlayers - 2 returned when 2 are registered", function () {
-    WARO.initializeGame(2, 1);
-    WARO.registerPlayer("Alice");
-    WARO.registerPlayer("Bob");
+test( "WARO.Game.getPlayerList - 2 returned when 2 are registered", function () {
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var game = WARO.createGame(1, players);
 
     // test
-    var result = WARO.listOfPlayers();
+    var result = game.getPlayerList();
 
     equal(result.length, 2, "Passed");
 });
