@@ -80,6 +80,58 @@ test( "WARO.Game.getPlayerList - 2 returned when 2 are registered", function () 
     equal(result.length, 2, "Passed");
 });
 
+test( "WARO.Round.isFinished - Not Finished when no bids", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+
+    // test
+    var result = round.isFinished();
+
+    equal(result, false, "Passed");
+});
+
+test( "WARO.Round.isFinished - Not Finished when less bids than players", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 50);
+
+    // test
+    var result = round.isFinished();
+
+    equal(result, false, "Passed");
+});
+
+test( "WARO.Round.isFinished - Finished when all bids accepted", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 50);
+    round.acceptBid(2, 50);
+
+    // test
+    var result = round.isFinished();
+
+    equal(result, true, "Passed");
+});
+
+test( "WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 100);
+    round.acceptBid(2, 99);
+
+    // test
+    var result = round.getWinner();
+
+    equal(result, 1, "Passed");
+});
+
+test( "WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 100);
+    round.acceptBid(2, 101);
+
+    // test
+    var result = round.getWinner();
+
+    equal(result, 2, "Passed");
+});
+
 test( "WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);

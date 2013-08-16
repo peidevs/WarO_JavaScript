@@ -9,36 +9,43 @@ WARO = (function ($) {
          IN_PROGRESS: "In progress",
          FINISHED: "Finished"
         };
-        var game = {};
+
         var _state = STATE.INVALID;
         var _players = players.slice(0);
 
-        var playersOK = (_players != null) && (_players.length > 1);
+        var _playerHands = [];
+        var _rounds = [];
 
-        if (playersOK && (numberOfRounds > 0)) {
+        var _playersOK = (_players != null) && (_players.length > 1);
+
+        if (_playersOK && (numberOfRounds > 0)) {
             _players = players.slice(0);
             _state = STATE.IN_PROGRESS;
+
+            var deckSize = numberOfRounds * (1 + _players.length);
+            var deck = createDeck(deckSize);
+            var shuffledDeck = shuffleDeck(deck);
         } else {
             _state = STATE.INVALID;
         }
 
-        game.getPlayers = function () {
+        var getPlayers = function () {
             return _players.slice(0);
         }
 
-        game.isInvalid = function() {
+        var isInvalid = function() {
             return STATE.INVALID === _state;
         };
 
-        game.isInProgress = function() {
+        var isInProgress = function() {
             return STATE.IN_PROGRESS === _state;
         };
 
-        game.isFinished = function() {
+        var isFinished = function() {
             return STATE.FINISHED === _state;
         };
 
-        game.getPlayerList = function () {
+        var getPlayerList = function () {
             var playerNames = [];
 
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
@@ -48,7 +55,11 @@ WARO = (function ($) {
             return playerNames;
         };
 
-        return game;
+        return {isInvalid: isInvalid,
+            isInProgress: isInProgress,
+            isFinished: isFinished,
+            getPlayerList: getPlayerList
+        };
     };
 
     var createPlayer = function (name) {
@@ -60,7 +71,7 @@ WARO = (function ($) {
 
         return {
             getName: getName
-        };;
+        };
     };
 
     var createDeck = function (cards) {
@@ -98,11 +109,54 @@ WARO = (function ($) {
         return splits;
     };
 
+    var createRound = function (kittyValue, playerCount) {
+        var _kittyValue = kittyValue;
+        var _playerCount = playerCount;
+        var _playerBids = [];
+
+        var getKittyValue = function() {
+            return _kittyValue;
+        };
+
+        var isFinished = function () {
+            return _playerCount === _playerBids.length;
+        };
+
+        var acceptBid = function (playerNumber, bidValue) {
+            _playerBids.push({number: playerNumber, bid: bidValue});
+        };
+
+        var getWinner = function () {
+            var winner = -1;
+            var bidValue = -1;
+            var currentHighest = -1;
+
+            for (var  bidIndex = 0; bidIndex < _playerBids.length; bidIndex++) {
+                bidValue = _playerBids[bidIndex].bid;
+
+                if (bidValue > currentHighest) {
+                    currentHighest = bidValue;
+                    winner = _playerBids[bidIndex].number;
+                }
+            }
+
+            return winner;
+        };
+
+        return {
+            getKittyValue: getKittyValue,
+            isFinished: isFinished,
+            acceptBid: acceptBid,
+            getWinner: getWinner
+        };
+    };
+
     return {createPlayer: createPlayer,
             createDeck: createDeck,
             shuffleDeck: shuffleDeck,
             splitDeck: splitDeck,
-            createGame: createGame
+            createGame: createGame,
+            createRound: createRound
     };
 } (jQuery) );
 
