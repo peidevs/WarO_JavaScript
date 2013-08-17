@@ -132,6 +132,16 @@ test( "WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101
     equal(result, 2, "Passed");
 });
 
+test( "WARO.Round.getWinner - Unfinished game results in -1", function () {
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 100);
+
+    // test
+    var result = round.getWinner();
+
+    equal(result, -1, "Passed");
+});
+
 test( "WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);

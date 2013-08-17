@@ -131,12 +131,14 @@ WARO = (function ($) {
             var bidValue = -1;
             var currentHighest = -1;
 
-            for (var  bidIndex = 0; bidIndex < _playerBids.length; bidIndex++) {
-                bidValue = _playerBids[bidIndex].bid;
+            if (isFinished()) {
+                for (var bidIndex = 0; bidIndex < _playerBids.length; bidIndex++) {
+                    bidValue = _playerBids[bidIndex].bid;
 
-                if (bidValue > currentHighest) {
-                    currentHighest = bidValue;
-                    winner = _playerBids[bidIndex].number;
+                    if (bidValue > currentHighest) {
+                        currentHighest = bidValue;
+                        winner = _playerBids[bidIndex].number;
+                    }
                 }
             }
 
