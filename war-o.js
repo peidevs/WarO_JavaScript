@@ -33,15 +33,15 @@ WARO = (function ($) {
             return _players.slice(0);
         }
 
-        var isInvalid = function() {
+        var isInvalid = function () {
             return STATE.INVALID === _state;
         };
 
-        var isInProgress = function() {
+        var isInProgress = function () {
             return STATE.IN_PROGRESS === _state;
         };
 
-        var isFinished = function() {
+        var isFinished = function () {
             return STATE.FINISHED === _state;
         };
 
@@ -74,8 +74,7 @@ WARO = (function ($) {
             return _hand.slice(0);
         };
 
-        return {
-            getName: getName,
+        return {getName: getName,
             getHand: getHand
         };
     };
@@ -151,8 +150,7 @@ WARO = (function ($) {
             return winner;
         };
 
-        return {
-            getKittyValue: getKittyValue,
+        return {getKittyValue: getKittyValue,
             isFinished: isFinished,
             acceptBid: acceptBid,
             getWinner: getWinner
@@ -160,11 +158,11 @@ WARO = (function ($) {
     };
 
     return {createPlayer: createPlayer,
-            createDeck: createDeck,
-            shuffleDeck: shuffleDeck,
-            splitDeck: splitDeck,
-            createGame: createGame,
-            createRound: createRound
+        createDeck: createDeck,
+        shuffleDeck: shuffleDeck,
+        splitDeck: splitDeck,
+        createGame: createGame,
+        createRound: createRound
     };
 } (jQuery) );
 
