@@ -64,13 +64,19 @@ WARO = (function ($) {
 
     var createPlayer = function (name) {
         var _name = name;
+        var _hand = [];
 
         var getName = function () {
             return name;
         };
 
+        var getHand = function () {
+            return _hand.slice(0);
+        };
+
         return {
-            getName: getName
+            getName: getName,
+            getHand: getHand
         };
     };
 
