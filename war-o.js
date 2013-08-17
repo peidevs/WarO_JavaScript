@@ -1,4 +1,4 @@
-WARO = (function ($) {
+WARO = (function (doc) {
     var _numberOfPlayers = 0;
     var _players = [];
     var _kitty = null;
@@ -66,6 +66,12 @@ WARO = (function ($) {
         var _name = name;
         var _hand = [];
 
+        // Register RoundFinished event listener
+        var handleRoundComplete = function (roundEvent) {
+            // TODO: add logic to extract signal player for next bid or perform end game logic
+        };
+        doc.addEventListener("roundEnd", handleRoundComplete, false);
+
         var getName = function () {
             return name;
         };
@@ -127,10 +133,6 @@ WARO = (function ($) {
             return _playerCount === _playerBids.length;
         };
 
-        var acceptBid = function (playerNumber, bidValue) {
-            _playerBids.push({number: playerNumber, bid: bidValue});
-        };
-
         var getWinner = function () {
             var winner = -1;
             var bidValue = -1;
@@ -150,6 +152,19 @@ WARO = (function ($) {
             return winner;
         };
 
+        var acceptBid = function (playerNumber, bidValue) {
+            _playerBids.push({number: playerNumber, bid: bidValue});
+
+            if (isFinished()) {
+                var roundEvent = doc.createEvent("Event");
+                roundEvent.initEvent("roundEvent", true, true);
+
+                roundEvent.winner = getWinner();
+
+                doc.dispatchEvent(roundEvent);
+            }
+        };
+
         return {getKittyValue: getKittyValue,
             isFinished: isFinished,
             acceptBid: acceptBid,
@@ -164,7 +179,7 @@ WARO = (function ($) {
         createGame: createGame,
         createRound: createRound
     };
-} (jQuery) );
+} (document) );
 
 var numberOfPlayers = 3;
 var maxValue = 60;
