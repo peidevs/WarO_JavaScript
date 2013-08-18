@@ -142,6 +142,23 @@ test( "WARO.Round.getWinner - Unfinished game results in -1", function () {
     equal(result, -1, "Passed");
 });
 
+test( "WARO.Round - Dispatches roundEvent when completed", function () {
+    var result = false;
+    var handleRoundComplete = function (event) {
+        result = true;
+    };
+
+    document.addEventListener("roundEvent", handleRoundComplete, false);
+
+    var round = WARO.createRound(1, 2); // 2 players
+    round.acceptBid(1, 100);
+
+    // test - this should fire the event
+    round.acceptBid(2, 101);
+
+    equal(result, true, "Passed");
+});
+
 test( "WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);
