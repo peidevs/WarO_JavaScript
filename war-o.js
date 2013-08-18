@@ -25,6 +25,15 @@ WARO = (function (doc) {
             var deckSize = numberOfRounds * (1 + _players.length);
             var deck = createDeck(deckSize);
             var shuffledDeck = shuffleDeck(deck);
+            var splits = splitDeck(shuffledDeck, _players.length + 1);
+
+            // Player hands are the first N splits of the split deck
+            _playerHands = splits.slice(1);
+
+            var kitty = splits[0];
+            for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
+                _rounds.push(createRound(kitty[roundIndex], _players.length));
+            }
         } else {
             _state = STATE.INVALID;
         }
