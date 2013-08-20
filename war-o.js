@@ -36,7 +36,7 @@ WARO = (function (doc) {
                 _rounds.push(createRound(kitty[roundIndex], _players.length));
             }
 
-            for (var playerNumber  = 1; playerIndex < _players.length; playerNumber++) {
+            for (var playerNumber  = 1; playerIndex <= _players.length; playerNumber++) {
                 _players[playerNumber].setNumber(playerNumber);
 
             // Register RoundFinished event listener
