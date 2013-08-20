@@ -36,6 +36,9 @@ WARO = (function (doc) {
                 _rounds.push(createRound(kitty[roundIndex], _players.length));
             }
 
+            for (var playerNumber  = 1; playerIndex < _players.length; playerNumber++) {
+                _players[playerNumber].setNumber(playerNumber);
+
             // Register RoundFinished event listener
             var handleRoundComplete = function (roundEvent) {
                 // TODO: add logic to extract signal player for next bid or perform end game logic
@@ -44,10 +47,6 @@ WARO = (function (doc) {
 
         } else {
             _state = STATE.INVALID;
-        }
-
-        var getPlayers = function () {
-            return _players.slice(0);
         }
 
         var isInvalid = function () {
@@ -72,6 +71,10 @@ WARO = (function (doc) {
             return playerNames;
         };
 
+        var acceptPlayerBid(playerNumber, bid) {
+            _rounds.acceptBid(playerNumber, bid);
+        };
+
         return {isInvalid: isInvalid,
             isInProgress: isInProgress,
             isFinished: isFinished,
@@ -82,6 +85,7 @@ WARO = (function (doc) {
     var createPlayer = function (name) {
         var _name = name;
         var _hand = [];
+        var _number = -1;;
 
         var getName = function () {
             return name;
@@ -91,8 +95,18 @@ WARO = (function (doc) {
             return _hand.slice(0);
         };
 
+        var getNumber = function () {
+            return _number;
+        };
+
+        var setNumber = function (number) {
+            _number = number;
+        };
+
         return {getName: getName,
-            getHand: getHand
+            getHand: getHand,
+            getNumber: getNumber,
+            setNumber: setNumber
         };
     };
 
