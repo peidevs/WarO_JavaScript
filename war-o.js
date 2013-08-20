@@ -19,37 +19,6 @@ WARO = (function (doc) {
 
         var _playersOK = (_players != null) && (_players.length > 1);
 
-        if (_playersOK && (numberOfRounds > 0)) {
-            _players = players.slice(0);
-            _state = STATE.IN_PROGRESS;
-
-            var deckSize = numberOfRounds * (1 + _players.length);
-            var deck = createDeck(deckSize);
-            var shuffledDeck = shuffleDeck(deck);
-            var splits = splitDeck(shuffledDeck, _players.length + 1);
-
-            // Player hands are the first N splits of the split deck
-            _playerHands = splits.slice(1);
-
-            var kitty = splits[0];
-            for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
-                _rounds.push(createRound(kitty[roundIndex], _players.length));
-            }
-
-            for (var playerNumber  = 1; playerNumber <= _players.length; playerNumber++) {
-                _players[playerNumber - 1].setNumber(playerNumber);
-            }
-
-            // Register RoundFinished event listener
-            var handleRoundComplete = function (roundEvent) {
-                _currentRound++;
-            };
-            doc.addEventListener("roundEnd", handleRoundComplete, false);
-
-        } else {
-            _state = STATE.INVALID;
-        }
-
         var isInvalid = function () {
             return STATE.INVALID === _state;
         };
@@ -77,17 +46,57 @@ WARO = (function (doc) {
 
         };
 
+        if (_playersOK && (numberOfRounds > 0)) {
+            _players = players.slice(0);
+            _state = STATE.IN_PROGRESS;
+
+            var deckSize = numberOfRounds * (1 + _players.length);
+            var deck = createDeck(deckSize);
+            var shuffledDeck = shuffleDeck(deck);
+            var splits = splitDeck(shuffledDeck, _players.length + 1);
+
+            // Player hands are the first N splits of the split deck
+            _playerHands = splits.slice(1);
+
+            var kitty = splits[0];
+            for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
+                _rounds.push(createRound(kitty[roundIndex], _players.length));
+            }
+
+            for (var playerNumber  = 1; playerNumber <= _players.length; playerNumber++) {
+                _players[playerNumber - 1].setNumber(playerNumber);
+            }
+
+            // Register RoundFinished event listener
+            var handleRoundComplete = function (roundEvent) {
+                _currentRound++;
+
+                for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
+                    // Give players the next kitt value and ask for bids
+                    _players[playerIndex].signalNextBid(_rounds[_currentRound].getKittyValue(), 
+                            acceptPlayerBid, _playerHands[playerIndex]);
+                }
+            };
+            doc.addEventListener("roundEnd", handleRoundComplete, false);
+
+        } else {
+            _state = STATE.INVALID;
+        }
+
         return {isInvalid: isInvalid,
             isInProgress: isInProgress,
             isFinished: isFinished,
-            getPlayerList: getPlayerList
+            getPlayerList: getPlayerList,
+            acceptPlayerBid: acceptPlayerBid
         };
     };
 
     var createPlayer = function (name) {
         var _name = name;
         var _hand = [];
-        var _number = -1;;
+        var _number = -1;
+        var _currentKittyValue = -1;
+        var _game = null;
 
         var getName = function () {
             return name;
@@ -105,10 +114,21 @@ WARO = (function (doc) {
             _number = number;
         };
 
+        var signalNextBid = function (kittyValue, hand) {
+            _hand = hand;
+            _currentKittyValue = kittyValue;
+        };
+
+        var setGame = function () {
+            _game = game;
+        };
+
         return {getName: getName,
             getHand: getHand,
             getNumber: getNumber,
-            setNumber: setNumber
+            setNumber: setNumber,
+            signalNextBid: signalNextBid,
+            setGame: setGame
         };
     };
 
