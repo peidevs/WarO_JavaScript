@@ -19,6 +19,9 @@ WARO = (function (doc) {
 
         var _playersOK = (_players != null) && (_players.length > 1);
 
+        console.log("Current player count: " + _players.length);
+        console.log("Number of rounds to play: " + numberOfRounds);
+
         var isInvalid = function () {
             return STATE.INVALID === _state;
         };
@@ -46,6 +49,32 @@ WARO = (function (doc) {
 
         };
 
+        var handleRoundComplete = function (roundEvent) {
+            _currentRound++;
+
+            if (_currentRound === _rounds.length) {
+                console.log("Game is FINISHED!");
+                _state = STATE.FINISHED;
+            } else {
+                console.log("Initiate round " + _currentRound);
+                initiateRound();
+            }
+        };
+
+        var initiateRound = function () {
+            var kittyValue = _rounds[_currentRound].getKittyValue();
+            console.log("Kitty Value for Round " + _currentRound + " is " + kittyValue);
+            for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
+                // Give players the next kitt value and ask for bids
+                var playerHand = _playerHands[playerIndex];
+                console.log("Player hand: " + playerHand);
+                _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
+            }
+
+        };
+        // Register RoundFinished event listener
+        doc.addEventListener("roundEnd", handleRoundComplete, false);
+
         if (_playersOK && (numberOfRounds > 0)) {
             _players = players.slice(0);
             _state = STATE.IN_PROGRESS;
@@ -55,10 +84,15 @@ WARO = (function (doc) {
             var shuffledDeck = shuffleDeck(deck);
             var splits = splitDeck(shuffledDeck, _players.length + 1);
 
+            console.log("Deck: " + deck);
+            console.log("Shuffled Deck: " + shuffledDeck);
+            console.log("Splits: " + splits);
+
             // Player hands are the first N splits of the split deck
             _playerHands = splits.slice(1);
 
             var kitty = splits[0];
+            console.log("Kitty pot: " + kitty);
             for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
                 _rounds.push(createRound(kitty[roundIndex], _players.length));
             }
@@ -67,18 +101,8 @@ WARO = (function (doc) {
                 _players[playerNumber - 1].setNumber(playerNumber);
             }
 
-            // Register RoundFinished event listener
-            var handleRoundComplete = function (roundEvent) {
-                _currentRound++;
-
-                for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
-                    // Give players the next kitt value and ask for bids
-                    _players[playerIndex].signalNextBid(_rounds[_currentRound].getKittyValue(), 
-                            acceptPlayerBid, _playerHands[playerIndex]);
-                }
-            };
-            doc.addEventListener("roundEnd", handleRoundComplete, false);
-
+            console.log("Game is IN PROGRESS!");
+            initiateRound();
         } else {
             _state = STATE.INVALID;
         }
@@ -114,9 +138,11 @@ WARO = (function (doc) {
             _number = number;
         };
 
-        var signalNextBid = function (kittyValue, hand) {
+        var signalNextBid = function (kittyValue, setNextBidFunction, hand) {
+            console.log("Kitty Value is: " + kittyValue + " for player " + _name);
             _hand = hand;
             _currentKittyValue = kittyValue;
+            setNextBidFunction(_number, _hand.pop());
         };
 
         var setGame = function () {
@@ -143,15 +169,17 @@ WARO = (function (doc) {
     };
 
     var shuffleDeck = function (deck) {
+        // From: http://stackoverflow.com/a/6274398/418969 
         var shuffledDeck = deck.slice(0); // naive clone
+        var counter = shuffledDeck.length;
+        var temp, index;
 
-        for (var index = deck.length - 1; index > 0; index--) {
-            var shuffIndex = Math.floor(Math.random() * (index + 1));
-            var temp = shuffledDeck[index];
-            shuffledDeck[index] = shuffledDeck[shuffIndex];
-            shuffledDeck[shuffIndex] = temp;
+        while (counter--) {
+            index = (Math.random() * counter) | 0;
 
-            shuffledDeck[shuffIndex] = shuffledDeck[index];
+            temp = shuffledDeck[counter];
+            shuffledDeck[counter] = shuffledDeck[index];
+            shuffledDeck[index] = temp;
         }
 
         return shuffledDeck;
@@ -208,6 +236,8 @@ WARO = (function (doc) {
 
                 roundEvent.winner = getWinner();
 
+                console.log("Winner: " + roundEvent.winner);
+
                 doc.dispatchEvent(roundEvent);
             }
         };
@@ -228,109 +258,17 @@ WARO = (function (doc) {
     };
 } (document) );
 
-var numberOfPlayers = 3;
-var maxValue = 60;
-
-function createPlayer() {
-    return { 
-        hand : [],
-             winnings : [],
-             initialize : function () {
-                 this.hand.sort(function(a,b) {
-                     return b-a;
-                 });
-             },
-             whatToPlay : function (kittyValue) {
-
-                 if ( kittyValue > (maxValue / 2)) {
-                     return this.hand.shift();
-                 } else {
-                     return this.hand.pop();
-                 }
-             },
-             calculateTotal : function () {
-                 var total = 0;
-                 $.each(this.winnings, function () {
-                     total += this;
-                 });
-                 return total;
-             }
-    };
-}
-
 $( document ).ready(function() {
+    var players = [];
+    var game = null;
 
-    var deck = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    players.push(WARO.createPlayer("Cassie"));
+    players.push(WARO.createPlayer("Dave"));
 
-    var i = 0;
+    game = WARO.createGame(10, players);
 
-    for (i = 0; i < 60; i++) {
-        deck[i] = i + 1;
-    }
 
-    deck = WARO.shuffleDeck(deck);
 
-    var players = new Object();
-    var kitty = [];
-
-    for (i = 0 ; i < numberOfPlayers ; i++ ) { 
-        players[i] = createPlayer();
-    }
-
-    var counter = 0;
-
-    for (i = 0 ; i < maxValue ; i++) {
-        if (counter === numberOfPlayers) {
-            kitty.push(deck.pop());
-            counter = 0;
-        } else {
-            players[counter].hand.push( deck.pop() );
-            counter++;
-        }
-    }
-
-    for (i in players ) {
-        $('#before-init').append('<div style="float : left; padding: 3em;" id="init-player' + i +'"></div>');
-
-        for (var playerIndex in players[i].hand) {
-            $('#init-player' + i).append(players[i].hand[playerIndex] +'<br />');
-        }
-    }
-
-    $('#before-init').append('<div style="float : left;  padding: 3em; color: red;" id="kitty" />');
-
-    for (i in kitty) {
-        $('#kitty').append(kitty[i] +'<br />');
-    }
-
-    for (var index in players) {
-        players[index].initialize();
-        $('#output').append('Initializing Player = ' + index + '<br />');
-    }
-
-    for (var kIndex in kitty) {
-
-        kittyValue = kitty[kIndex];
-
-        var highestBidderIndex = -1;
-        var highestBid = -1;
-
-        for (var pIndex in players) {
-
-            currentPlayerBid = players[pIndex].whatToPlay(kittyValue);
-
-            if (currentPlayerBid > highestBid) {
-                highestBidderIndex = pIndex;
-                highestBid = currentPlayerBid;
-            }
-        }
-
-        $('#output').append('Player ' + highestBidderIndex + ' bid ' + highestBid + ' to win ' + kittyValue + ' points.<br />');
-
-        players[highestBidderIndex].winnings.push(kittyValue);
-    }
-
-    for (var finalIndex in players) {
-        $('#output').append('Player ' + finalIndex + ' won '+ players[finalIndex].calculateTotal() +' points.<br />');
-    }
 });
