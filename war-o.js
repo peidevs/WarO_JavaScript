@@ -101,8 +101,8 @@ WARO = (function (doc) {
                 _players[playerNumber - 1].setNumber(playerNumber);
             }
 
-            console.log("Game is IN PROGRESS!");
-            initiateRound();
+            console.log("Game is " + _state);
+            
         } else {
             _state = STATE.INVALID;
         }
@@ -111,7 +111,8 @@ WARO = (function (doc) {
             isInProgress: isInProgress,
             isFinished: isFinished,
             getPlayerList: getPlayerList,
-            acceptPlayerBid: acceptPlayerBid
+            acceptPlayerBid: acceptPlayerBid,
+            initiateRound: initiateRound
         };
     };
 
