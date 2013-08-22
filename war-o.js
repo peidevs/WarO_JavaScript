@@ -67,13 +67,12 @@ WARO = (function (doc) {
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
                 // Give players the next kitt value and ask for bids
                 var playerHand = _playerHands[playerIndex];
-                console.log("Player hand: " + playerHand);
                 _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
             }
 
         };
         // Register RoundFinished event listener
-        doc.addEventListener("roundEnd", handleRoundComplete, false);
+        doc.addEventListener("roundEvent", handleRoundComplete, false);
 
         if (_playersOK && (numberOfRounds > 0)) {
             _players = players.slice(0);
@@ -84,15 +83,11 @@ WARO = (function (doc) {
             var shuffledDeck = shuffleDeck(deck);
             var splits = splitDeck(shuffledDeck, _players.length + 1);
 
-            console.log("Deck: " + deck);
-            console.log("Shuffled Deck: " + shuffledDeck);
-            console.log("Splits: " + splits);
-
             // Player hands are the first N splits of the split deck
             _playerHands = splits.slice(1);
 
             var kitty = splits[0];
-            console.log("Kitty pot: " + kitty);
+
             for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
                 _rounds.push(createRound(kitty[roundIndex], _players.length));
             }
@@ -102,7 +97,7 @@ WARO = (function (doc) {
             }
 
             console.log("Game is " + _state);
-            
+
         } else {
             _state = STATE.INVALID;
         }
@@ -231,6 +226,8 @@ WARO = (function (doc) {
         var acceptBid = function (playerNumber, bidValue) {
             _playerBids.push({number: playerNumber, bid: bidValue});
 
+            console.log("Bids received: " + _playerBids.length + " / Total Bids Needed: " + _playerCount);
+
             if (isFinished()) {
                 var roundEvent = doc.createEvent("Event");
                 roundEvent.initEvent("roundEvent", true, true);
@@ -269,6 +266,7 @@ $( document ).ready(function() {
     players.push(WARO.createPlayer("Dave"));
 
     game = WARO.createGame(10, players);
+    game.initiateRound();
 
 
 
