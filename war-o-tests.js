@@ -1,4 +1,4 @@
-test( "WARO.createGame - newly created, valid game is In Progress", function () {
+test("WARO.createGame - newly created, valid game is In Progress", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
@@ -11,7 +11,7 @@ test( "WARO.createGame - newly created, valid game is In Progress", function () 
     equal(result, true, "Passed");
 });
 
-test( "WARO.createGame - Not Enough Players goes to Invalid State", function () {
+test("WARO.createGame - Not Enough Players goes to Invalid State", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
 
@@ -23,7 +23,7 @@ test( "WARO.createGame - Not Enough Players goes to Invalid State", function () 
     equal(result, true, "Passed");
 });
 
-test( "WARO.createGame - Not Enough Rounds goes to Invalid State", function () {
+test("WARO.createGame - Not Enough Rounds goes to Invalid State", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
@@ -36,7 +36,7 @@ test( "WARO.createGame - Not Enough Rounds goes to Invalid State", function () {
     equal(result, true, "Passed");
 });
 
-test( "WARO.Game.getPlayerList - listed player has same name she was registered under", function () {
+test("WARO.Game.getPlayerList - listed player has same name she was registered under", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
@@ -48,7 +48,7 @@ test( "WARO.Game.getPlayerList - listed player has same name she was registered 
     equal(result[0], "Alice", "Passed");
 });
 
-test( "WARO.Game.getPlayerList - 2 returned when 2 are registered", function () {
+test("WARO.Game.getPlayerList - 2 returned when 2 are registered", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
@@ -60,7 +60,7 @@ test( "WARO.Game.getPlayerList - 2 returned when 2 are registered", function () 
     equal(result.length, 2, "Passed");
 });
 
-test( "WARO.Round.isFinished - Not Finished when no bids", function () {
+test("WARO.Round.isFinished - Not Finished when no bids", function () {
     var round = WARO.createRound(1, 2); // 2 players
 
     // test
@@ -69,7 +69,7 @@ test( "WARO.Round.isFinished - Not Finished when no bids", function () {
     equal(result, false, "Passed");
 });
 
-test( "WARO.Round.isFinished - Not Finished when less bids than players", function () {
+test("WARO.Round.isFinished - Not Finished when less bids than players", function () {
     var round = WARO.createRound(1, 2); // 2 players
     round.acceptBid(1, 50);
 
@@ -79,7 +79,7 @@ test( "WARO.Round.isFinished - Not Finished when less bids than players", functi
     equal(result, false, "Passed");
 });
 
-test( "WARO.Round.isFinished - Finished when all bids accepted", function () {
+test("WARO.Round.isFinished - Finished when all bids accepted", function () {
     var round = WARO.createRound(1, 2); // 2 players
     round.acceptBid(1, 50);
     round.acceptBid(2, 50);
@@ -90,7 +90,7 @@ test( "WARO.Round.isFinished - Finished when all bids accepted", function () {
     equal(result, true, "Passed");
 });
 
-test( "WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", function () {
+test("WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", function () {
     var round = WARO.createRound(1, 2); // 2 players
     round.acceptBid(1, 100);
     round.acceptBid(2, 99);
@@ -101,7 +101,7 @@ test( "WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99",
     equal(result, 1, "Passed");
 });
 
-test( "WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101", function () {
+test("WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101", function () {
     var round = WARO.createRound(1, 2); // 2 players
     round.acceptBid(1, 100);
     round.acceptBid(2, 101);
@@ -112,7 +112,7 @@ test( "WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101
     equal(result, 2, "Passed");
 });
 
-test( "WARO.Round.getWinner - Unfinished game results in -1", function () {
+test("WARO.Round.getWinner - Unfinished game results in -1", function () {
     var round = WARO.createRound(1, 2); // 2 players
     round.acceptBid(1, 100);
 
@@ -122,7 +122,7 @@ test( "WARO.Round.getWinner - Unfinished game results in -1", function () {
     equal(result, -1, "Passed");
 });
 
-test( "WARO.Round - Dispatches roundEvent when completed", function () {
+test("WARO.Round - Dispatches roundEvent when completed", function () {
     var result = false;
     var handleRoundComplete = function (event) {
         result = true;
@@ -139,14 +139,14 @@ test( "WARO.Round - Dispatches roundEvent when completed", function () {
     equal(result, true, "Passed");
 });
 
-test( "WARO.createDeck", function () {
+test("WARO.createDeck", function () {
     // test
     var deck = WARO.createDeck(60);
 
     equal(deck.length, 60, "Passed");
 });
 
-test( "WARO.shuffleDeck - same length", function () {
+test("WARO.shuffleDeck - same length", function () {
     var orig = [1,2,3];
 
     //test
@@ -155,7 +155,7 @@ test( "WARO.shuffleDeck - same length", function () {
     equal(shuff.length, orig.length, "Passed");
 });
 
-test( "WARO.splitDeck - 4-element array split into length 2 arrays gives 2 splits", function () {
+test("WARO.splitDeck - 4-element array split into length 2 arrays gives 2 splits", function () {
     var deck = [1, 2, 3, 4];
 
     //test
@@ -164,7 +164,7 @@ test( "WARO.splitDeck - 4-element array split into length 2 arrays gives 2 split
     equal(splits.length, 2, "Passed");
 });
 
-test( "WARO.splitDeck - 5-element array split into length 1 arrays gives 5 splits", function () {
+test("WARO.splitDeck - 5-element array split into length 1 arrays gives 5 splits", function () {
     var deck = [1,2,3,4,5];
 
     //test
@@ -173,7 +173,7 @@ test( "WARO.splitDeck - 5-element array split into length 1 arrays gives 5 split
     equal(splits.length, 5, "Passed");
 });
 
-test( "WARO.splitDeck - 5-element array split into length 5 arrays gives 1 split", function () {
+test("WARO.splitDeck - 5-element array split into length 5 arrays gives 1 split", function () {
     var deck = [1,2,3,4,5];
 
     //test
@@ -182,7 +182,7 @@ test( "WARO.splitDeck - 5-element array split into length 5 arrays gives 1 split
     equal(splits.length, 1, "Passed");
 });
 
-test( "WARO.splitDeck - 6-element array split into length 2 arrays gives first split of 3 elements", function () {
+test("WARO.splitDeck - 6-element array split into length 2 arrays gives first split of 3 elements", function () {
     var deck = [1, 2, 3, 4, 5, 6];
 
     //test
@@ -191,7 +191,7 @@ test( "WARO.splitDeck - 6-element array split into length 2 arrays gives first s
     equal(firstSplit.length, 2, "Passed");
 });
 
-test( "WARO.splitDeck - 6-element array split into length 4 arrays gives first split of 4 elements", function () {
+test("WARO.splitDeck - 6-element array split into length 4 arrays gives first split of 4 elements", function () {
     var deck = [1, 2, 3, 4, 5, 6];
 
     //test
