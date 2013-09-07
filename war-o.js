@@ -62,17 +62,22 @@ WARO = (function (doc) {
         };
 
         var initiateRound = function () {
-            var kittyValue = _rounds[_currentRound].getKittyValue();
+            var roundObj = _rounds[_currentRound];
+            var kittyValue = roundObj.getKittyValue();
             console.log("Kitty Value for Round " + _currentRound + " is " + kittyValue);
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
                 // Give players the next kitt value and ask for bids
                 var playerHand = _playerHands[playerIndex];
                 _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
             }
-
         };
-        // Register RoundFinished event listener
-        doc.addEventListener("roundEvent", handleRoundComplete, false);
+
+        var startGame = function () {
+            // Register RoundFinished event listener
+            doc.addEventListener("roundEvent", handleRoundComplete, false);
+
+            initiateRound();
+        };
 
         if (_playersOK && (numberOfRounds > 0)) {
             _players = players.slice(0);
@@ -107,7 +112,7 @@ WARO = (function (doc) {
             isFinished: isFinished,
             getPlayerList: getPlayerList,
             acceptPlayerBid: acceptPlayerBid,
-            initiateRound: initiateRound
+            startGame: startGame
         };
     };
 
@@ -135,7 +140,6 @@ WARO = (function (doc) {
         };
 
         var signalNextBid = function (kittyValue, setNextBidFunction, hand) {
-            console.log("Kitty Value is: " + kittyValue + " for player " + _name);
             _hand = hand;
             _currentKittyValue = kittyValue;
             setNextBidFunction(_number, _hand.pop());
@@ -184,7 +188,9 @@ WARO = (function (doc) {
     var splitDeck = function (deck, splitSize) {
         var splits = [];
 
-        for (var deckIndex = 0, splitIndex = 0; deckIndex < deck.length; deckIndex += splitSize, splitIndex++) {
+        for (var deckIndex = 0, splitIndex = 0; 
+                deckIndex < deck.length; 
+                deckIndex += splitSize, splitIndex++) {
             splits[splitIndex] = deck.slice(deckIndex, deckIndex + splitSize);
         }
 
@@ -226,7 +232,8 @@ WARO = (function (doc) {
         var acceptBid = function (playerNumber, bidValue) {
             _playerBids.push({number: playerNumber, bid: bidValue});
 
-            console.log("Bids received: " + _playerBids.length + " / Total Bids Needed: " + _playerCount);
+            console.log("Bids received: " + _playerBids.length 
+                    + " / Total Bids Needed: " + _playerCount);
 
             if (isFinished()) {
                 var roundEvent = doc.createEvent("Event");
@@ -256,18 +263,3 @@ WARO = (function (doc) {
     };
 } (document) );
 
-$( document ).ready(function() {
-    var players = [];
-    var game = null;
-
-    players.push(WARO.createPlayer("Alice"));
-    players.push(WARO.createPlayer("Bob"));
-    players.push(WARO.createPlayer("Cassie"));
-    players.push(WARO.createPlayer("Dave"));
-
-    game = WARO.createGame(10, players);
-    game.initiateRound();
-
-
-
-});
