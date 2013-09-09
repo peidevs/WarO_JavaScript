@@ -73,6 +73,7 @@ WARO = (function (doc) {
         };
 
         var startGame = function () {
+            console.log('Game has started!');
             // Register RoundFinished event listener
             doc.addEventListener("roundEvent", handleRoundComplete, false);
 
@@ -86,7 +87,7 @@ WARO = (function (doc) {
             var deckSize = numberOfRounds * (1 + _players.length);
             var deck = createDeck(deckSize);
             var shuffledDeck = shuffleDeck(deck);
-            var splits = splitDeck(shuffledDeck, _players.length + 1);
+            var splits = splitDeck(shuffledDeck, numberOfRounds);
 
             // Player hands are the first N splits of the split deck
             _playerHands = splits.slice(1);
@@ -100,9 +101,6 @@ WARO = (function (doc) {
             for (var playerNumber  = 1; playerNumber <= _players.length; playerNumber++) {
                 _players[playerNumber - 1].setNumber(playerNumber);
             }
-
-            console.log("Game is " + _state);
-
         } else {
             _state = STATE.INVALID;
         }
