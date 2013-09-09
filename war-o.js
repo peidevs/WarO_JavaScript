@@ -128,10 +128,6 @@ WARO = (function (doc) {
             return name;
         };
 
-        var getHand = function () {
-            return _hand.slice(0);
-        };
-
         var getNumber = function () {
             return _number;
         };
@@ -151,7 +147,6 @@ WARO = (function (doc) {
         };
 
         return {getName: getName,
-            getHand: getHand,
             getNumber: getNumber,
             setNumber: setNumber,
             signalNextBid: signalNextBid,

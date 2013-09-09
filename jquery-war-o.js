@@ -7,7 +7,9 @@ $( document ).ready(function() {
         $('#output').append('Current player hand is: ' + hand + '<br />');
         $('#bidButton').unbind('click');
         $('#bidButton').click(function () {
-            setNextBidFunction(humanPlayer.getNumber(), $('#playerBid').val());
+            if (!game.isFinished()) {
+                setNextBidFunction(humanPlayer.getNumber(), $('#playerBid').val());
+            }
         });
     };
 
