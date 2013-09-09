@@ -17,7 +17,7 @@ WARO = (function (doc) {
         var _rounds = [];
         var _currentRound = 0;
 
-        var _playersOK = (_players != null) && (_players.length > 1);
+        var _playersOK = (_players !== null) && (_players.length > 1);
 
         console.log("Current player count: " + _players.length);
         console.log("Number of rounds to play: " + numberOfRounds);
@@ -171,15 +171,16 @@ WARO = (function (doc) {
     var shuffleDeck = function (deck) {
         // From: http://stackoverflow.com/a/6274398/418969 
         var shuffledDeck = deck.slice(0); // naive clone
-        var counter = shuffledDeck.length;
+        var counter = shuffledDeck.length - 1;
         var temp, index;
 
-        while (counter--) {
+        while (counter) {
             index = (Math.random() * counter) | 0;
 
             temp = shuffledDeck[counter];
             shuffledDeck[counter] = shuffledDeck[index];
             shuffledDeck[index] = temp;
+            counter--;
         }
 
         return shuffledDeck;
@@ -232,8 +233,8 @@ WARO = (function (doc) {
         var acceptBid = function (playerNumber, bidValue) {
             _playerBids.push({number: playerNumber, bid: bidValue});
 
-            console.log("Bids received: " + _playerBids.length 
-                    + " / Total Bids Needed: " + _playerCount);
+            console.log("Bids received: " + _playerBids.length +
+                    " / Total Bids Needed: " + _playerCount);
 
             if (isFinished()) {
                 var roundEvent = doc.createEvent("Event");
