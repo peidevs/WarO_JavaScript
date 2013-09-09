@@ -5,9 +5,9 @@ WARO = (function (doc) {
 
     var createGame = function (numberOfRounds, players) {
         var STATE = {
-         INVALID: "Invalid",
-         IN_PROGRESS: "In progress",
-         FINISHED: "Finished"
+            INVALID: "Invalid",
+            IN_PROGRESS: "In progress",
+            FINISHED: "Finished"
         };
 
         var _state = STATE.INVALID;
@@ -116,7 +116,7 @@ WARO = (function (doc) {
         };
     };
 
-    var createPlayer = function (name) {
+    var createPlayer = function (name, customSignalNextBid) {
         var _name = name;
         var _hand = [];
         var _number = -1;
@@ -139,7 +139,7 @@ WARO = (function (doc) {
             _number = number;
         };
 
-        var signalNextBid = function (kittyValue, setNextBidFunction, hand) {
+        var signalNextBid = customSignalNextBid || function (kittyValue, setNextBidFunction, hand) {
             _hand = hand;
             _currentKittyValue = kittyValue;
             setNextBidFunction(_number, _hand.pop());
@@ -191,8 +191,8 @@ WARO = (function (doc) {
         for (var deckIndex = 0, splitIndex = 0; 
                 deckIndex < deck.length; 
                 deckIndex += splitSize, splitIndex++) {
-            splits[splitIndex] = deck.slice(deckIndex, deckIndex + splitSize);
-        }
+                    splits[splitIndex] = deck.slice(deckIndex, deckIndex + splitSize);
+                }
 
         return splits;
     };
