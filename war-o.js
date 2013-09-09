@@ -66,7 +66,7 @@ WARO = (function (doc) {
             var kittyValue = roundObj.getKittyValue();
             console.log("Kitty Value for Round " + _currentRound + " is " + kittyValue);
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
-                // Give players the next kitt value and ask for bids
+                // Give players the next kitty value and ask for bids
                 var playerHand = _playerHands[playerIndex];
                 _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
             }
