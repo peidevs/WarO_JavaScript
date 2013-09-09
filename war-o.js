@@ -45,19 +45,24 @@ WARO = (function (doc) {
         };
 
         var acceptPlayerBid = function (playerNumber, bid) {
-            _rounds[_currentRound].acceptBid(playerNumber, bid);
+            var roundObj = _rounds[_currentRound];
+            
+            roundObj.acceptBid(playerNumber, bid);
+            
+            if (roundObj.isFinished()) {
+                var winner = roundObj.getWinner();
 
-        };
+                console.log("Winner: " + winner);
+                
+                _currentRound++;
 
-        var handleRoundComplete = function (roundEvent) {
-            _currentRound++;
-
-            if (_currentRound === _rounds.length) {
-                console.log("Game is FINISHED!");
-                _state = STATE.FINISHED;
-            } else {
-                console.log("Initiate round " + _currentRound);
-                initiateRound();
+                if (_currentRound === _rounds.length) {
+                    console.log("Game is FINISHED!");
+                    _state = STATE.FINISHED;
+                } else {
+                    console.log("Initiate round " + _currentRound);
+                    initiateRound();
+                }
             }
         };
 
@@ -74,8 +79,6 @@ WARO = (function (doc) {
 
         var startGame = function () {
             console.log('Game has started!');
-            // Register RoundFinished event listener
-            doc.addEventListener("roundEvent", handleRoundComplete, false);
 
             initiateRound();
         };
@@ -233,17 +236,6 @@ WARO = (function (doc) {
 
             console.log("Bids received: " + _playerBids.length +
                     " / Total Bids Needed: " + _playerCount);
-
-            if (isFinished()) {
-                var roundEvent = doc.createEvent("Event");
-                roundEvent.initEvent("roundEvent", true, true);
-
-                roundEvent.winner = getWinner();
-
-                console.log("Winner: " + roundEvent.winner);
-
-                doc.dispatchEvent(roundEvent);
-            }
         };
 
         return {getKittyValue: getKittyValue,
