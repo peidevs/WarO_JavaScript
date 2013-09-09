@@ -5,6 +5,7 @@ $( document ).ready(function() {
     var signalNextBidPlayer = function (kittyValue, setNextBidFunction, hand) {
         $('#output').append('Kitty Value is: ' + kittyValue + '<br />');
         $('#output').append('Current player hand is: ' + hand + '<br />');
+        $('#bidButton').unbind('click');
         $('#bidButton').click(function () {
             setNextBidFunction(humanPlayer.getNumber(), $('#playerBid').val());
         });
