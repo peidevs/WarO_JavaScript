@@ -20,6 +20,6 @@ $( document ).ready(function() {
     players.push(WARO.createPlayer("Bob"));
     players.push(WARO.createPlayer("Cassie"));
 
-    game = WARO.createGame(10, players);
+    game = WARO.createGame(5, players);
     game.startGame();
 });
