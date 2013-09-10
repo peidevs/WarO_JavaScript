@@ -219,3 +219,12 @@ test("WARO.getPositionInHand - Don't find 77 in the hand and return -1", functio
     equal(result, -1, "Passed");
 });
 
+test("WARO.removeNumberFromHand - Remove middle from 3-length array - length is now 2", function () {
+    var hand = [1, 77, 3];
+
+    //test
+    var result = WARO.removeNumberFromHand(77, hand);
+
+    equal(result.length, 2, "Passed");
+});
+

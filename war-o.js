@@ -212,9 +212,8 @@ WARO = (function (doc) {
         var result = hand;
         if (valPos >= 0) {
             var half1 = hand.slice(0, valPos);
-            var half2 = hand.slice(valPos);
-            half1.concat(half2);
-            result = half1;
+            var half2 = hand.slice(valPos + 1);
+            result = half1.concat(half2);
         }
 
         return result;
