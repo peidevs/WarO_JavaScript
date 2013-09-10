@@ -228,3 +228,21 @@ test("WARO.removeNumberFromHand - Remove middle from 3-length array - length is 
     equal(result.length, 2, "Passed");
 });
 
+test("WARO.removeNumberFromHand - Remove middle from 3-length array - result[1] is now 3", function () {
+    var hand = [1, 77, 3];
+
+    //test
+    var result = WARO.removeNumberFromHand(77, hand);
+
+    equal(result[1], 3, "Passed");
+});
+
+test("WARO.removeNumberFromHand - Remove first element - first element is old second element", function () {
+    var hand = [77, 2, 3];
+
+    //test
+    var result = WARO.removeNumberFromHand(77, hand);
+
+    equal(result[0], 2, "Passed");
+});
+
