@@ -182,3 +182,40 @@ test("WARO.splitDeck - 6-element array split into length 4 arrays gives first sp
 
     equal(firstSplit.length, 4, "Passed");
 });
+
+test("WARO.getPositionInHand - Find 77 in the first position and return 0", function () {
+    var hand = [77, 2, 3, 4, 5, 6];
+
+    //test
+    var result = WARO.getPositionInHand(77, hand);
+
+    equal(result, 0, "Passed");
+});
+
+test("WARO.getPositionInHand - Find 77 in the third position and return 2", function () {
+    var hand = [1, 2, 77, 4, 5, 6];
+
+    //test
+    var result = WARO.getPositionInHand(77, hand);
+
+    equal(result, 2, "Passed");
+});
+
+test("WARO.getPositionInHand - Find 77 in the last position and return 5", function () {
+    var hand = [1, 2, 3, 4, 5, 77];
+
+    //test
+    var result = WARO.getPositionInHand(77, hand);
+
+    equal(result, 5, "Passed");
+});
+
+test("WARO.getPositionInHand - Don't find 77 in the hand and return -1", function () {
+    var hand = [1, 2, 3, 4, 5, 6];
+
+    //test
+    var result = WARO.getPositionInHand(77, hand);
+
+    equal(result, -1, "Passed");
+});
+

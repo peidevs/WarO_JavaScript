@@ -48,6 +48,9 @@ WARO = (function (doc) {
             var roundObj = _rounds[_currentRound];
             
             roundObj.acceptBid(playerNumber, bid);
+
+            var handIndex = playerNumber - 1;
+            var hand = _playerHands[handIndex];
             
             if (roundObj.isFinished()) {
                 var winner = roundObj.getWinner();
@@ -194,6 +197,29 @@ WARO = (function (doc) {
         return splits;
     };
 
+    var getPositionInHand = function (number, hand) {
+        for (var valPos = 0; valPos < hand.length; valPos++) {
+            if (hand[valPos] === number) {
+                return valPos;
+            }
+        }
+        return -1;
+    };
+
+    var removeNumberFromHand = function (number, hand) {
+        var valPos = getPositionInHand(number, hand);
+
+        var result = hand;
+        if (valPos >= 0) {
+            var half1 = hand.slice(0, valPos);
+            var half2 = hand.slice(valPos);
+            half1.concat(half2);
+            result = half1;
+        }
+
+        return result;
+    };
+
     var createRound = function (kittyValue, playerCount) {
         var _kittyValue = kittyValue;
         var _playerCount = playerCount;
@@ -245,7 +271,9 @@ WARO = (function (doc) {
         shuffleDeck: shuffleDeck,
         splitDeck: splitDeck,
         createGame: createGame,
-        createRound: createRound
+        createRound: createRound,
+        getPositionInHand: getPositionInHand,
+        removeNumberFromHand: removeNumberFromHand 
     };
 } (document) );
 
