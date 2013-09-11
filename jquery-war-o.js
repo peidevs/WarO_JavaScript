@@ -5,6 +5,14 @@ $(document).ready(function() {
     var signalNextBidPlayer = function (kittyValue, setNextBidFunction, hand) {
         $('#output').append('Kitty Value is: ' + kittyValue + '<br />');
         $('#output').append('Current player hand is: ' + hand + '<br />');
+
+        var bidSelection = $('#playerBid');
+        bidSelection.empty();
+        console.log("Starting to populate select");
+        $.each(hand, function () {
+            console.log("Looky looky: " + this);
+            bidSelection.append($('<option>').val(this).text(this));
+        });
         $('#bidButton').unbind('click');
         $('#bidButton').click(function () {
             if (!game.isFinished()) {
