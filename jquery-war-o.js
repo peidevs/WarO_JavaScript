@@ -8,7 +8,8 @@ $(document).ready(function() {
         $('#bidButton').unbind('click');
         $('#bidButton').click(function () {
             if (!game.isFinished()) {
-                setNextBidFunction(humanPlayer.getNumber(), $('#playerBid').val());
+                var bidValue = parseInt($('#playerBid').val(), 10);
+                setNextBidFunction(humanPlayer.getNumber(), bidValue);
             }
         });
     };

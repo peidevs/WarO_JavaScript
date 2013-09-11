@@ -51,6 +51,10 @@ WARO = (function (doc) {
 
             var handIndex = playerNumber - 1;
             var hand = _playerHands[handIndex];
+
+            hand = removeNumberFromHand(bid, hand);
+
+            _playerHands[handIndex] = hand;
             
             if (roundObj.isFinished()) {
                 var winner = roundObj.getWinner();
@@ -75,7 +79,7 @@ WARO = (function (doc) {
             console.log("Kitty Value for Round " + _currentRound + " is " + kittyValue);
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
                 // Give players the next kitty value and ask for bids
-                var playerHand = _playerHands[playerIndex];
+                var playerHand = _playerHands[playerIndex].slice(0);
                 _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
             }
         };
