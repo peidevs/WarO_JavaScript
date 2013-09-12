@@ -8,7 +8,6 @@ $(document).ready(function() {
 
         var bidSelection = $('#playerBid');
         bidSelection.empty();
-        console.log("Starting to populate select");
         $.each(hand, function () {
             console.log("Looky looky: " + this);
             bidSelection.append($('<option>').val(this).text(this));
