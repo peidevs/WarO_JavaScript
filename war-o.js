@@ -57,10 +57,6 @@ WARO = (function (doc) {
             _playerHands[handIndex] = hand;
             
             if (roundObj.isFinished()) {
-                var winner = roundObj.getWinner();
-
-                console.log("Winner: " + winner);
-                
                 _currentRound++;
 
                 if (_currentRound === _rounds.length) {
@@ -73,14 +69,20 @@ WARO = (function (doc) {
             }
         };
 
-        var initiateRound = function () {
+        var initiateRound = function (roundObject) {
             var roundObj = _rounds[_currentRound];
             var kittyValue = roundObj.getKittyValue();
+
+            var prevRound = null;
+            if (_currentRound >= 1) {
+                prevRound = _rounds[_currentRound - 1];
+            }
+
             console.log("Kitty Value for Round " + _currentRound + " is " + kittyValue);
             for (var playerIndex = 0; playerIndex < _players.length; playerIndex++) {
                 // Give players the next kitty value and ask for bids
                 var playerHand = _playerHands[playerIndex].slice(0);
-                _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand);
+                _players[playerIndex].signalNextBid(kittyValue, acceptPlayerBid, playerHand, prevRound);
             }
         };
 
@@ -105,7 +107,7 @@ WARO = (function (doc) {
             var kitty = splits[0];
 
             for ( var roundIndex = 0; roundIndex < kitty.length; roundIndex++) {
-                _rounds.push(createRound(kitty[roundIndex], _players.length));
+                _rounds.push(createRound(kitty[roundIndex], _players));
             }
 
             for (var playerNumber  = 1; playerNumber <= _players.length; playerNumber++) {
@@ -223,9 +225,9 @@ WARO = (function (doc) {
         return result;
     };
 
-    var createRound = function (kittyValue, playerCount) {
+    var createRound = function (kittyValue, players) {
         var _kittyValue = kittyValue;
-        var _playerCount = playerCount;
+        var _players = players;
         var _playerBids = [];
 
         var getKittyValue = function() {
@@ -233,7 +235,7 @@ WARO = (function (doc) {
         };
 
         var isFinished = function () {
-            return _playerCount === _playerBids.length;
+            return _players.length === _playerBids.length;
         };
 
         var getWinner = function () {
@@ -256,8 +258,7 @@ WARO = (function (doc) {
         };
 
         var acceptBid = function (playerNumber, bidValue) {
-            //_playerBids.push({number: playerNumber, bid: bidValue});
-            _playerBids[playerNumber] = bidValue;
+            _playerBids.push({number: playerNumber, bid: bidValue});
 
             console.log("Player " + playerNumber + " submitted bid. " + _playerBids.length +
                     " / " + _players.length + " Bids Received.");

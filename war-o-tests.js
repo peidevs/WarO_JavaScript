@@ -61,7 +61,10 @@ test("WARO.Game.getPlayerList - 2 returned when 2 are registered", function () {
 });
 
 test("WARO.Round.isFinished - Not Finished when no bids", function () {
-    var round = WARO.createRound(1, 2); // 2 players
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var round = WARO.createRound(1, players); 
 
     // test
     var result = round.isFinished();
@@ -70,7 +73,10 @@ test("WARO.Round.isFinished - Not Finished when no bids", function () {
 });
 
 test("WARO.Round.isFinished - Not Finished when less bids than players", function () {
-    var round = WARO.createRound(1, 2); // 2 players
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var round = WARO.createRound(1, players);
     round.acceptBid(1, 50);
 
     // test
@@ -80,7 +86,10 @@ test("WARO.Round.isFinished - Not Finished when less bids than players", functio
 });
 
 test("WARO.Round.isFinished - Finished when all bids accepted", function () {
-    var round = WARO.createRound(1, 2); // 2 players
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var round = WARO.createRound(1, players);
     round.acceptBid(1, 50);
     round.acceptBid(2, 50);
 
@@ -91,7 +100,10 @@ test("WARO.Round.isFinished - Finished when all bids accepted", function () {
 });
 
 test("WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", function () {
-    var round = WARO.createRound(1, 2); // 2 players
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var round = WARO.createRound(1, players);
     round.acceptBid(1, 100);
     round.acceptBid(2, 99);
 
@@ -102,7 +114,10 @@ test("WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", 
 });
 
 test("WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101", function () {
-    var round = WARO.createRound(1, 2); // 2 players
+    var players = [];
+    players.push(WARO.createPlayer("Alice"));
+    players.push(WARO.createPlayer("Bob"));
+    var round = WARO.createRound(1, players);
     round.acceptBid(1, 100);
     round.acceptBid(2, 101);
 
