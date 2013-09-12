@@ -256,10 +256,11 @@ WARO = (function (doc) {
         };
 
         var acceptBid = function (playerNumber, bidValue) {
-            _playerBids.push({number: playerNumber, bid: bidValue});
+            //_playerBids.push({number: playerNumber, bid: bidValue});
+            _playerBids[playerNumber] = bidValue;
 
             console.log("Player " + playerNumber + " submitted bid. " + _playerBids.length +
-                    " / " + _playerCount + " Bids Revceived.");
+                    " / " + _players.length + " Bids Received.");
         };
 
         return {getKittyValue: getKittyValue,
