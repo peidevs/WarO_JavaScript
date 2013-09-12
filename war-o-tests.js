@@ -103,6 +103,8 @@ test("WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", 
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
+    players[0].setNumber(1);
+    players[1].setNumber(2);
     var round = WARO.createRound(1, players);
     round.acceptBid(1, 100);
     round.acceptBid(2, 99);
@@ -110,13 +112,15 @@ test("WARO.Round.getWinner - Player 1 bids 100, wins over player 2 bidding 99", 
     // test
     var result = round.getWinner();
 
-    equal(result, 1, "Passed");
+    equal(result.getNumber(), 1, "Passed");
 });
 
 test("WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101", function () {
     var players = [];
     players.push(WARO.createPlayer("Alice"));
     players.push(WARO.createPlayer("Bob"));
+    players[0].setNumber(1);
+    players[1].setNumber(2);
     var round = WARO.createRound(1, players);
     round.acceptBid(1, 100);
     round.acceptBid(2, 101);
@@ -124,7 +128,7 @@ test("WARO.Round.getWinner - Player 1 bids 100, loses over player 2 bidding 101"
     // test
     var result = round.getWinner();
 
-    equal(result, 2, "Passed");
+    equal(result.getNumber(), 2, "Passed");
 });
 
 test("WARO.Round.getWinner - Unfinished game results in -1", function () {

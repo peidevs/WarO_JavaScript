@@ -249,7 +249,7 @@ WARO = (function (doc) {
 
                     if (bidValue > currentHighest) {
                         currentHighest = bidValue;
-                        winner = _playerBids[bidIndex].number;
+                        winner = _playerBids[bidIndex].player;
                     }
                 }
             }
@@ -258,9 +258,10 @@ WARO = (function (doc) {
         };
 
         var acceptBid = function (playerNumber, bidValue) {
-            _playerBids.push({number: playerNumber, bid: bidValue});
+            var playerObj = _players[playerNumber - 1];
+            _playerBids.push({player: playerObj, bid: bidValue});
 
-            console.log("Player " + playerNumber + " submitted bid. " + _playerBids.length +
+            console.log("Player " + playerNumber + " submitted bid of " + bidValue + ". " + _playerBids.length +
                     " / " + _players.length + " Bids Received.");
         };
 
