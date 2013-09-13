@@ -260,9 +260,6 @@ WARO = (function (doc) {
         var acceptBid = function (playerNumber, bidValue) {
             var playerObj = _players[playerNumber - 1];
             _playerBids.push({player: playerObj, bid: bidValue});
-
-            console.log("Player " + playerNumber + " submitted bid of " + bidValue + ". " + _playerBids.length +
-                    " / " + _players.length + " Bids Received.");
         };
 
         return {getKittyValue: getKittyValue,
