@@ -13,6 +13,9 @@ WARO = (function (doc) {
         var _state = STATE.INVALID;
         var _players = players.slice(0);
 
+        // Create an array and initialize to 0
+        var _playerScores = Array.apply(null, new Array(5)).map(Number.prototype.valueOf,0);
+
         var _playerHands = [];
         var _rounds = [];
         var _currentRound = 0;
@@ -57,10 +60,15 @@ WARO = (function (doc) {
             _playerHands[handIndex] = hand;
             
             if (roundObj.isFinished()) {
+                var winner = roundObj.getWinner();
+                var playerIndex = winner.getNumber() - 1;
+                _playerScores[playerIndex] += roundObj.getKittyValue();
+
                 _currentRound++;
 
                 if (_currentRound === _rounds.length) {
                     console.log("Game is FINISHED!");
+                    console.log("Player scores: " + _playerScores);
                     _state = STATE.FINISHED;
                 } else {
                     console.log("Initiate round " + _currentRound);
