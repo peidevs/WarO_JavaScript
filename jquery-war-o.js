@@ -9,7 +9,6 @@ $(document).ready(function() {
         var bidSelection = $('#playerBid');
         bidSelection.empty();
         $.each(hand, function () {
-            console.log("Looky looky: " + this);
             bidSelection.append($('<option>').val(this).text(this));
         });
         $('#bidButton').unbind('click');
