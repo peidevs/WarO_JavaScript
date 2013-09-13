@@ -4,7 +4,11 @@ $(document).ready(function() {
 
     var signalNextBidPlayer = function (kittyValue, setNextBidFunction, hand) {
         $('#output').append('Kitty Value is: ' + kittyValue + '<br />');
-        $('#output').append('Current player hand is: ' + hand + '<br />');
+        $.each(players, function () {
+            var number = this.getNumber();
+            var playerPoints = game.getScoreForPlayer(number);
+            $('#output').append('Player ' + number + ' has ' + playerPoints + ' points.<br />');
+        });
 
         var bidSelection = $('#playerBid');
         bidSelection.empty();

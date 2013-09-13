@@ -100,6 +100,10 @@ WARO = (function (doc) {
             initiateRound();
         };
 
+        var getScoreForPlayer = function (playerNum) {
+            return _playerScores[playerNum - 1];
+        };
+
         if (_playersOK && (numberOfRounds > 0)) {
             _players = players.slice(0);
             _state = STATE.IN_PROGRESS;
@@ -130,7 +134,8 @@ WARO = (function (doc) {
             isFinished: isFinished,
             getPlayerList: getPlayerList,
             acceptPlayerBid: acceptPlayerBid,
-            startGame: startGame
+            startGame: startGame,
+            getScoreForPlayer: getScoreForPlayer
         };
     };
 
