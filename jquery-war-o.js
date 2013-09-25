@@ -3,11 +3,12 @@ $(document).ready(function() {
     var game = null;
 
     var signalNextBidPlayer = function (kittyValue, setNextBidFunction, hand) {
-        $('#output').append('Kitty Value is: ' + kittyValue + '<br />');
+        $('#output').append('<br />Kitty Value is: ' + kittyValue + '<br />');
         $.each(players, function () {
+            var name = this.getName();
             var number = this.getNumber();
             var playerPoints = game.getScoreForPlayer(number);
-            $('#output').append('Player ' + number + ' has ' + playerPoints + ' points.<br />');
+            $('#output').append(name + ' has ' + playerPoints + ' points.<br />');
         });
 
         var bidSelection = $('#playerBid');
@@ -35,7 +36,9 @@ $(document).ready(function() {
             var winners = [];
             var winningPoints = -1;
         
+            $('#output').append('<br />');
             $.each(players, function () {
+                    var name = this.getName();
                     var number = this.getNumber();
                     var playerPoints = game.getScoreForPlayer(number);
                     if (winningPoints < playerPoints) {
@@ -46,9 +49,10 @@ $(document).ready(function() {
                         winners.push(this);
                         winningPoints = playerPoints;
                     }
-                    $('#output').append('Player ' + number + ' has ' + playerPoints + ' points.<br />');
+                    $('#output').append(name + ' has ' + playerPoints + ' points.<br />');
             });
             
+            $('#output').append('<br />');
             if (winners.length === 1) {
                 $('#output').append('With ' + winningPoints + ' points, ' + winners[0].getName() + ' won!<br />');
             } else {
