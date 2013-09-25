@@ -3,7 +3,7 @@ WARO = (function (doc) {
     var _players = [];
     var _kitty = null;
 
-    var createGame = function (numberOfRounds, players) {
+    var createGame = function (numberOfRounds, players, customSignalEndOfGame) {
         var STATE = {
             INVALID: "Invalid",
             IN_PROGRESS: "In progress",
@@ -12,9 +12,13 @@ WARO = (function (doc) {
 
         var _state = STATE.INVALID;
         var _players = players.slice(0);
+        
+        var _signalEndOfGame = customSignalEndOfGame || function () {
+            console.log("End of Game! A Winner is You!");  
+        };
 
         // Create an array and initialize to 0
-        var _playerScores = Array.apply(null, new Array(5)).map(Number.prototype.valueOf,0);
+        var _playerScores = Array.apply(null, new Array(_players.length)).map(Number.prototype.valueOf,0);
 
         var _playerHands = [];
         var _rounds = [];
@@ -69,7 +73,12 @@ WARO = (function (doc) {
                 if (_currentRound === _rounds.length) {
                     console.log("Game is FINISHED!");
                     console.log("Player scores: " + _playerScores);
+                    
                     _state = STATE.FINISHED;
+                    
+                    
+                    // Signal end of game
+                    _signalEndOfGame();
                 } else {
                     console.log("Initiate round " + _currentRound);
                     initiateRound();
